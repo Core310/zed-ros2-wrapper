@@ -399,9 +399,9 @@ def generate_launch_description():
                 default_value='true',
                 description='Enable URDF processing and starts Robot State Published to propagate static TF.',
                 choices=['true', 'false']),
-            DeclareLaunchArgument(
+            DeclareLaunchArgument(#fixme possible? By right tf frames are handled by robot localization
                 'publish_tf',
-                default_value='true',
+                default_value='false',
                 description='Enable publication of the `odom -> camera_link` TF.',
                 choices=['true', 'false']),
             DeclareLaunchArgument(
