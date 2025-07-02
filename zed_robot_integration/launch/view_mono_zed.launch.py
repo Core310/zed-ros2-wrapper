@@ -33,7 +33,7 @@ os.environ["RCUTILS_COLORIZED_OUTPUT"] = "1"
 
 # Cmaera name and model
 camera_name = 'zed'
-camera_model = 'zedx'
+camera_model = 'zed2i'
 
 # RVIZ2 Configurations to be loaded by ZED Node
 config_rviz2 = os.path.join(
