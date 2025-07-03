@@ -2,11 +2,11 @@
 <robot name="scoutm" xmlns:xacro="http://ros.org/wiki/xacro">
 
     <xacro:arg name="camera_name" default="zed"/>
-    <xacro:arg name="camera_model" default="zed2i"/>
-    <xacro:arg name="use_zed_localization" default="true"/>
+    <xacro:arg name="camera_model" default="zed"/>
+    <xacro:arg name="use_zed_localization" default="false"/>
     <xacro:arg name="baseline" default="0.0"/>
 
-    <!-- Include the robot (e.g. AgileX Scout mini) -->
+    <!-- AgileX Scout mini + Lidar_base -->
     <xacro:include filename="$(find scout_description)/urdf/scout2.urdf.xacro"/>
 
     <!-- Add one ZED Camera -->
@@ -15,28 +15,34 @@
         <gnss_origin/>
     </xacro:zed_camera>
 
+    <joint name="$(arg camera_name)_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="$(arg camera_name)_camera_link"/>
+        <origin
+                xyz="0.3 0.0 0"
+                rpy="0 0 0"
+        />
+    </joint>
 
-    <!-- Add a joint to connect the ZED Camera to the robot -->
+
+<!--    &lt;!&ndash; Add a joint to connect the ZED Camera to the robot  &ndash;&gt;
     <xacro:if value="$(arg use_zed_localization)">
-        <!-- ZED Localization -> The reference link is '$(arg camera_name)_camera_link' and 'base_link' is a child -->
+        &lt;!&ndash; We really don't care about this part since we never use zed's localizer since we're using robot_localization instead
+        ZED Localization -> The reference link is '$(arg camera_name)_camera_link' and 'base_link' is a child &ndash;&gt;
         <joint name="$(arg camera_name)_joint" type="fixed">
             <parent link="$(arg camera_name)_camera_link"/>
             <child link="base_link"/>
             <origin
-                    xyz="-0.12 0.0 -0.25"
+                    xyz="1 0.0 -.5"
                     rpy="0 0 0"
-            /><!--todo update with new pos-->
+            />&lt;!&ndash;todo update with new pos&ndash;&gt;
         </joint>
+
+
+
     </xacro:if>
-    <xacro:unless value="$(arg use_zed_localization)"><!--we arent using this so don't rly need to worry about it-->
-        <!-- NO ZED Localization -> '$(arg camera_name)_camera_link' is a child of 'base_link' -->
-        <joint name="$(arg camera_name)_joint" type="fixed">
-            <parent link="base_link"/>
-            <child link="$(arg camera_name)_camera_link"/>
-            <origin
-                    xyz="0.12 0.0 0.25"
-                    rpy="0 0 0"
-            />
-        </joint>
-    </xacro:unless>
+    <xacro:unless value="$(arg use_zed_localization)">
+        &lt;!&ndash; NO ZED Localization -> '$(arg camera_name)_camera_link' is a child of 'base_link' &ndash;&gt;
+        &lt;!&ndash;original joint code goes here&ndash;&gt;
+    </xacro:unless>-->
 </robot>
