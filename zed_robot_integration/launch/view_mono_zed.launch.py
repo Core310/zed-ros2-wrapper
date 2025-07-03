@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import os
+from math import pi
+
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -70,6 +72,26 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         arguments=[['-d'], [config_rviz2]],
     )
+    # point cloud laser node TODO setup with the unitree l1 node!
+    pcl_node = Node(
+        package='pointcloud_to_laserscan',
+        executable='pointcloud_to_laserscan_node',
+        name='pointcloud_to_laserscan_node',
+        remappings=[('cloud_in', "/ray/pointcloud2"),
+                    ('scan', "/scan")],
+        parameters=[{
+            'transform_tolerance': 0.05,
+            'min_height': 0.0,
+            'max_height': 1.0,
+            'angle_min': -pi,
+            'angle_max': pi,
+            'angle_increment': pi / 180.0 / 2.0,
+            'scan_time': 1 / 10,  # 10Hz
+            'range_min': 0.1,
+            'range_max': 100.0,
+            'use_inf': True,
+        }],
+    )
 
     # Robot State Publisher
     rsp_node = Node(
@@ -92,6 +114,7 @@ def launch_setup(context, *args, **kwargs):
 
     return [
         rviz2_node,
+        pcl_node,
         rsp_node,
         jsp_node
     ]
