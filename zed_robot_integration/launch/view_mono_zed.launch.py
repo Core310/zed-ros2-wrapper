@@ -125,7 +125,7 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 'use_zed_localization',
                 default_value='true',
-                description='Creates a TF tree with `camera_link` as root frame if `true`, otherwise the root is `base_ling`.',
+                description='Creates a TF tree with `camera_link` as root frame if `true`, otherwise the root is `base_link`.',
                 choices=['true', 'false']),
             OpaqueFunction(function=launch_setup)    
         ]
