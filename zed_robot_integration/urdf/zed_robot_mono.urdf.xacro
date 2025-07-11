@@ -3,7 +3,8 @@
 
     <xacro:arg name="camera_name" default="zed"/>
     <xacro:arg name="camera_model" default="zed"/>
-    <xacro:arg name="use_zed_localization" default="false"/>
+    <xacro:arg name="use_zed_localization" default="false"/><!--should always defualt false given localization is running via robot_localization node
+    -->
     <xacro:arg name="baseline" default="0.0"/>
 
     <!-- AgileX Scout mini + Lidar_base -->
@@ -35,10 +36,8 @@
             <origin
                     xyz="1 0.0 -.5"
                     rpy="0 0 0"
-            />&lt;!&ndash;todo update with new pos&ndash;&gt;
+            />
         </joint>
-
-
 
     </xacro:if>
     <xacro:unless value="$(arg use_zed_localization)">
