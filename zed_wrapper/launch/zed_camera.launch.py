@@ -85,7 +85,7 @@ def parse_array_param(param):
 def launch_setup(context, *args, **kwargs):
     return_array = []
 
-    wrapper_dir = get_package_share_directory('zed_wrapper')    
+    get_package_share_directory('zed_wrapper')
 
     # Launch configuration variables
     node_log_type = LaunchConfiguration('node_log_type')
@@ -247,7 +247,7 @@ def launch_setup(context, *args, **kwargs):
     return_array.append(rsp_node)
 
     # ROS 2 Component Container
-    if(container_name_val == ''):
+    if container_name_val == '':
         container_name_val='zed_container'
         distro = os.environ['ROS_DISTRO']
         if distro == 'foxy':

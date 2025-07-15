@@ -73,25 +73,25 @@ def launch_setup(context, *args, **kwargs):
         arguments=[['-d'], [config_rviz2]],
     )
     # node that converts 3d -> 2d laser scans (we dont use/need it)
-    # pcl_node = Node(
-    #     package='pointcloud_to_laserscan',
-    #     executable='pointcloud_to_laserscan_node',
-    #     name='pointcloud_to_laserscan_node',
-    #     remappings=[('cloud_in', "/ray/pointcloud2"),
-    #                 ('scan', "/scan")],
-    #     parameters=[{
-    #         'transform_tolerance': 0.05,
-    #         'min_height': 0.0,
-    #         'max_height': 1.0,
-    #         'angle_min': -pi,
-    #         'angle_max': pi,
-    #         'angle_increment': pi / 180.0 / 2.0,
-    #         'scan_time': 1 / 10,  # 10Hz
-    #         'range_min': 0.1,
-    #         'range_max': 100.0,
-    #         'use_inf': True,
-    #     }],
-    # )
+    pcl_node = Node(
+        package='pointcloud_to_laserscan',
+        executable='pointcloud_to_laserscan_node',
+        name='pointcloud_to_laserscan_node',
+        remappings=[('cloud_in', "/ray/pointcloud2"),
+                    ('scan', "/scan")],
+        parameters=[{
+            'transform_tolerance': 0.05,
+            'min_height': 0.0,
+            'max_height': 1.0,
+            'angle_min': -pi,
+            'angle_max': pi,
+            'angle_increment': pi / 180.0 / 2.0,
+            'scan_time': 1 / 10,  # 10Hz
+            'range_min': 0.1,
+            'range_max': 100.0,
+            'use_inf': True,
+        }],
+    )
 
     # Robot State Publisher
     rsp_node = Node(
@@ -116,7 +116,7 @@ def launch_setup(context, *args, **kwargs):
         rviz2_node,
         rsp_node,
         jsp_node,
-        # pcl_node,
+        pcl_node,
     ]
 
 def generate_launch_description():
