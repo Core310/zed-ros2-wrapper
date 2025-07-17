@@ -77,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
         package='pointcloud_to_laserscan',
         executable='pointcloud_to_laserscan_node',
         name='pointcloud_to_laserscan_node',
-        remappings=[('cloud_in', "/ray/pointcloud2"),
+        remappings=[('cloud_in', "/unilidar/cloud"),
                     ('scan', "/scan")],
         parameters=[{
             'transform_tolerance': 0.05,
@@ -93,7 +93,19 @@ def launch_setup(context, *args, **kwargs):
         }],
     )
 
-    # Robot State Publisher
+    static_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=[
+            '0', '0', '0',  # x y z
+            '0', '0', '0', '1',  # quaternion rot
+            'base_link',  # parent
+            'unilidar_link'  # child (the frame stamped on your PointCloud2)
+        ]
+    )
+
+
+# Robot State Publisher
     rsp_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -117,6 +129,7 @@ def launch_setup(context, *args, **kwargs):
         rsp_node,
         jsp_node,
         pcl_node,
+        static_tf
     ]
 
 def generate_launch_description():
