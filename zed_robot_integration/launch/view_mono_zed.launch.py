@@ -72,12 +72,12 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         arguments=[['-d'], [config_rviz2]],
     )
-    # node that converts 3d -> 2d laser scans (we dont use/need it)
+    # node that converts 3d -> 2d laser scans (we dont use/need it) this should reflect zed poitn cloud
     pcl_node = Node(
         package='pointcloud_to_laserscan',
         executable='pointcloud_to_laserscan_node',
         name='pointcloud_to_laserscan_node',
-        remappings=[('cloud_in', "/unilidar/cloud"),
+        remappings=[('cloud_in', "/zed/zed_node/mapping/fused_cloud"),
                     ('scan', "/scan")],
         parameters=[{
             'transform_tolerance': 0.05,
@@ -92,18 +92,6 @@ def launch_setup(context, *args, **kwargs):
             'use_inf': True,
         }],
     )
-
-    static_tf = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=[
-            '0', '0', '0',  # x y z
-            '0', '0', '0', '1',  # quaternion rot
-            'base_link',  # parent
-            'unilidar_link'  # child (the frame stamped on your PointCloud2)
-        ]
-    )
-
 
 # Robot State Publisher
     rsp_node = Node(
@@ -128,9 +116,8 @@ def launch_setup(context, *args, **kwargs):
         rviz2_node,
         rsp_node,
         jsp_node,
-        pcl_node,
-        static_tf
-    ]
+        # pcl_node,
+        ]
 
 def generate_launch_description():
     return LaunchDescription(
